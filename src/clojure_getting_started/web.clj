@@ -24,3 +24,6 @@
 ;; For interactive development:
 ;; (.stop server)
 ;; (def server (-main))
+
+; (require 'clojure-getting-started.web)
+; (def server (clojure-getting-started.web/-main))
