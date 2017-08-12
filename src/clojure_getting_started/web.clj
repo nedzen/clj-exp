@@ -9,6 +9,7 @@
             [clojure.java.jdbc :as db]))
 
 (def sample (env :sample "sample-string-thing"))
+(def connection-url (env :database-url (str "postgresql://admin:1234@localhost:5432/kebabs" "?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory")))
 
 (defn splash []
   {:status 200
@@ -17,13 +18,13 @@
                    (format "<a href=\"/%s?input=%s\">%s %s</a><br />"
                            kind sample kind sample))
                  ["<hr /><ul>"]
-                 (for [s (db/query (env :database-url)
+                 (for [s (db/query connection-url
                                    ["select content from sayings"])]
                    (format "<li>%s</li>" (:content s)))
                  ["</ul>"])})
 
 (defn record [input]
-  (db/insert! (env :database-url "postgres://localhost:5432/kebabs")
+  (db/insert! connection-url
               :sayings {:content input}))
 
 (defroutes app
